@@ -1,30 +1,10 @@
-import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-axios.defaults.baseURL = 'https://648cbfdc8620b8bae7ed56b5.mockapi.io/';
-
-export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
-  const response = await axios.get('/contacts');
-  return response.data;
-});
-
-export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async contact => {
-    const response = await axios.post('/contacts', contact);
-    return response.data;
-  }
-);
-
-export const deleteContact = createAsyncThunk(
-  'contacts/deleteContact',
-  async contactId => {
-    await axios.delete(`/contacts/${contactId}`);
-    return contactId;
-  }
-);
-
-export const setFilterValue = createAction('contacts/setFilterValue');
+import { createSlice } from '@reduxjs/toolkit';
+import {
+  fetchContacts,
+  addContact,
+  deleteContact,
+  setFilterValue,
+} from './operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -34,6 +14,7 @@ const contactsSlice = createSlice({
     error: null,
     filter: '',
   },
+
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, state => {
@@ -49,8 +30,18 @@ const contactsSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
+      .addCase(addContact.pending, state => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(addContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
         state.items.push(action.payload);
+      })
+      .addCase(addContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.items = state.items.filter(
