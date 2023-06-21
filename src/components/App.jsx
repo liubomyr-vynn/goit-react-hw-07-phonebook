@@ -4,7 +4,7 @@ import Filter from './Filter/Filter';
 
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchContacts } from '../redux/contactsSlice';
+import { fetchContacts } from '../redux/operations';
 
 const App = () => {
   const dispatch = useDispatch();
