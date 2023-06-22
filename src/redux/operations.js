@@ -13,7 +13,7 @@ export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (contact, { getState, rejectWithValue }) => {
     const existingContact = getState().contacts.items.find(
-      c => c.name === contact.name
+      c => c.name.toLowerCase() === contact.name.toLowerCase()
     );
     if (existingContact) {
       Report.info('Info', 'Contact already exists.', 'Ok');
