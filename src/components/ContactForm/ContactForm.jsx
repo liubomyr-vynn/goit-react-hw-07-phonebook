@@ -42,7 +42,7 @@ const ContactForm = () => {
             className="form__input"
             type="tel"
             name="number"
-            pattern="^([+]?[\s0-9]+)?(\(\d{1,3}\)|\d{1,3})([-]?[\s]?[\d]+)+$"
+            pattern="^(\+?[0-9.\(\)\-\s]*)$"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             id="number"
